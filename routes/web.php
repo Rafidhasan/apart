@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'PropertyController@home');
 
 Route::get('/property-single', function () {
     return view('property-single');

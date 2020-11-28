@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
+    public function home() {
+        $cover_properties = Property::orderByDesc('created_at')->limit(3)->get();
+        $latest_properties = Property::orderByDesc('created_at')->limit(6)->get();
+        return view('index', [
+            'cover_properties' => $cover_properties,
+            'latest_properties' => $latest_properties
+        ]);
+    }
+
     public function index(Request $request) {
         return view('property', [
             'id' => $request->id
@@ -43,11 +52,11 @@ class PropertyController extends Controller
         }
 
         if($request->hasfile('property_image')) {
-            $file = $request->file('property_image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time(). '.' .$extension;
-            $file->move('uploads/highlights/'. $filename);
-            $property->property_image = $filename;
+            $user_file = $request->file('property_image');
+            $extension = $user_file->getClientOriginalExtension();
+            $fileName = time() . '.' .$extension;
+            $user_file->move('img/', $fileName);
+            $property->property_image = $fileName;
         }   else {
             dd('keno vai');
         }
